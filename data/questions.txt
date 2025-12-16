@@ -1,0 +1,5 @@
+# ID | TYPE | QUESTION | ANSWER | EXPLANATION | OPTIONS(콤마로 구분)
+101|KEYWORD|public|public|접근제어자|
+102|KEYWORD|void|void|리턴값없음|
+201|OX|자바는 객체지향이다|O|OOP언어입니다|
+301|BLANK|상속 키워드는?|extends|확장하다|extends,implements,class,abstract
