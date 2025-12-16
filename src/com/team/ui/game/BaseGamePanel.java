@@ -49,7 +49,7 @@ public class BaseGamePanel extends JPanel {
         add(bottomPanel, BorderLayout.SOUTH);
     }
 
-    // 게임 시작 시 타이머 가동 [cite: 90]
+    // 각 자식에서 override 할 것 
     public void startGame() {
         score = 0;
         timeLeft = 60;

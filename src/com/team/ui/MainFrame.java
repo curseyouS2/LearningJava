@@ -3,13 +3,8 @@ package com.team.ui;
 import javax.swing.*;
 import java.awt.*;
 
-// 패키지 경로 확인 (파일 위치에 따라 다를 수 있음)
-import com.team.ui.intro.ModeSelectPanel;
-import com.team.ui.intro.StartPanel;
-import com.team.ui.game.TypingGamePanel;
-import com.team.ui.game.OXGamePanel;
-// import com.team.ui.game.FillBlankPanel; // 아직 안 만들었으면 주석 처리
-// import com.team.ui.game.NotePanel;      // 오답노트 패널 (나중에 추가)
+import com.team.ui.intro.*;
+import com.team.ui.game.*;
 
 public class MainFrame extends JFrame {
     
@@ -21,6 +16,8 @@ public class MainFrame extends JFrame {
     private ModeSelectPanel modePanel;
     private TypingGamePanel typingPanel;
     private OXGamePanel oxPanel;
+    private FillBlankPanel blankPanel;
+    private NotePanel notePanel;
     
     public MainFrame() {
         // 1. 기본 프레임 설정
@@ -39,17 +36,17 @@ public class MainFrame extends JFrame {
         modePanel = new ModeSelectPanel(this);
         typingPanel = new TypingGamePanel(this);
         oxPanel = new OXGamePanel(this);
+        blankPanel = new FillBlankPanel(this);
+        notePanel = new NotePanel(this);
         
         // 4. 패널을 카드 레이아웃에 추가 (이름표 붙이기)
         mainContainer.add(startPanel, "Start");
         mainContainer.add(modePanel, "Mode");
-        mainContainer.add(typingPanel, "TypingGame"); // ModeSelectPanel의 버튼 이름과 같아야 함
-        mainContainer.add(oxPanel, "OXGame");         // ModeSelectPanel의 버튼 이름과 같아야 함
+        mainContainer.add(typingPanel, "TypingGame"); 
+        mainContainer.add(oxPanel, "OXGame");         
+        mainContainer.add(blankPanel, "BlankGame");
+        mainContainer.add(notePanel, "Note");
         
-        // 나중에 빈칸 채우기나 오답노트 만들면 여기에 추가
-        // mainContainer.add(new FillBlankPanel(this), "GameBlank");
-        // mainContainer.add(new NotePanel(this), "Note");
-
         // 5. 프레임에 컨테이너 부착
         add(mainContainer);
         
@@ -61,22 +58,27 @@ public class MainFrame extends JFrame {
 
     // ★ 화면 전환 메서드 (가장 중요)
     public void changePanel(String panelName) {
-        // 1. 화면 바꾸기
+    	
         cardLayout.show(mainContainer, panelName);
         
-        // 2. 게임 화면으로 갈 때마다 '게임 시작(초기화)' 시켜주기
-        if (panelName.equals("TypingGame")) {
-            typingPanel.startGame(); // 점수 0점, 시간 리셋
-        } else if (panelName.equals("OXGame")) {
-            oxPanel.startGame();     // 문제 리셋
+        
+        if (panelName.equals("TypingGame"))
+        {
+            typingPanel.startGame(); 
         } 
-        /* 나중에 추가
-        else if (panelName.equals("GameBlank")) {
+        else if (panelName.equals("OXGame")) 
+        {
+            oxPanel.startGame();     
+        } 
+        else if (panelName.equals("GameBlank")) 
+        { 
             blankPanel.startGame();
-        } else if (panelName.equals("Note")) {
-            notePanel.loadWrongAnswers(); // 오답노트는 데이터를 새로고침 해야 함
         }
-        */
+        else if (panelName.equals("Note")) 
+        { 
+            notePanel.startGame(); 
+        }
+        
 
         // 3. 키보드 입력을 위해 포커스 맞추기
         mainContainer.requestFocusInWindow();

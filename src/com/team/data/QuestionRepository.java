@@ -37,6 +37,24 @@ public class QuestionRepository {
         add(new Question(203, "생성자는 리턴 타입이 없다.", "O", "생성자는 클래스명과 같으며 리턴 타입이 없습니다."));
         add(new Question(204, "배열의 인덱스는 1부터 시작한다.", "X", "배열은 0부터 시작합니다."));
         add(new Question(205, "String은 변경 불가능(Immutable)한 객체다.", "O", "String 값을 바꾸면 새로운 객체가 생성됩니다."));
+        
+        add(new Question(301, QuestionType.BLANK, 
+        	    "다음 코드는 상속을 구현하는 부분이다. 빈칸에 알맞은 키워드는?", 
+        	    "extends", 
+        	    "클래스 상속은 extends, 인터페이스 구현은 implements를 사용합니다.", 
+        	    new String[]{"extends", "implements", "import", "package"}));
+
+        	add(new Question(302, QuestionType.BLANK, 
+        	    "객체의 인스턴스를 생성할 때 사용하는 키워드는?", 
+        	    "new", 
+        	    "객체 생성 시에는 new 키워드를 사용합니다.", 
+        	    new String[]{"create", "new", "make", "object"}));
+
+        	add(new Question(303, QuestionType.BLANK, 
+        	    "값을 반환하지 않는 메서드의 리턴 타입은?", 
+        	    "void", 
+        	    "리턴값이 없을 때는 void를 명시해야 합니다.", 
+        	    new String[]{"null", "void", "empty", "zero"}));
     }
 
     private void add(Question q) {
@@ -58,5 +76,19 @@ public class QuestionRepository {
         wrongQuestionIds.add(id);
         System.out.println("[시스템] 오답 노트에 추가됨. ID: " + id); // 확인용 로그
         // TODO: 나중에 파일(wrong_notes.txt) 저장 코드 추가
+    }
+    public List<Question> getWrongQuestions() {
+        List<Question> list = new ArrayList<>();
+        for (int id : wrongQuestionIds) {
+            if (questionMap.containsKey(id)) {
+                list.add(questionMap.get(id));
+            }
+        }
+        return list;
+    }
+
+    // (선택사항) 오답 노트 초기화 기능
+    public void clearWrongAnswers() {
+        wrongQuestionIds.clear();
     }
 }
