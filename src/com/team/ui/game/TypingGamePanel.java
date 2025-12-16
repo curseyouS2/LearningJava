@@ -26,7 +26,7 @@ public class TypingGamePanel extends BaseGamePanel {
         centerPanel.setBorder(BorderFactory.createEmptyBorder(100, 0, 0, 0));
 
         wordLabel = new JLabel("Ready?");
-        wordLabel.setFont(new Font("Arial", Font.BOLD, 40));
+        wordLabel.setFont(new Font("맑은 고딕", Font.BOLD, 40));
         wordLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         inputField = new JTextField(15);
@@ -66,13 +66,15 @@ public class TypingGamePanel extends BaseGamePanel {
     private void checkAnswer() {
         String input = inputField.getText().trim();
         
-        if (currentQuestion.checkAnswer(input)) {
-            score += 10;
-            scoreLabel.setText("점수: " + score);
+        if (currentQuestion.checkAnswer(input)) 
+        {
+        	updateScore(10);
             inputField.setBackground(new Color(200, 255, 200)); // 초록
-        } else {
-            score -= 5;
-            // ★ 틀렸으니 저장소에 ID 신고
+        } 
+        else 
+        {
+        	updateScore(-5);
+            // 오답노트에 삽입
             QuestionRepository.getInstance().addWrongAnswer(currentQuestion.getId());
             inputField.setBackground(new Color(255, 200, 200)); // 빨강
         }

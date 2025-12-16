@@ -5,6 +5,7 @@ import java.awt.*;
 
 import com.team.ui.intro.*;
 import com.team.ui.game.*;
+import com.team.data.*;
 
 public class MainFrame extends JFrame {
     
@@ -18,6 +19,8 @@ public class MainFrame extends JFrame {
     private OXGamePanel oxPanel;
     private FillBlankPanel blankPanel;
     private NotePanel notePanel;
+    private SaveLoadPanel saveLoadPanel;
+    private SaveManager saveManager; 
     
     public MainFrame() {
         // 1. 기본 프레임 설정
@@ -38,6 +41,9 @@ public class MainFrame extends JFrame {
         oxPanel = new OXGamePanel(this);
         blankPanel = new FillBlankPanel(this);
         notePanel = new NotePanel(this);
+        saveLoadPanel = new SaveLoadPanel(this);
+        saveManager = new SaveManager();
+        
         
         // 4. 패널을 카드 레이아웃에 추가 (이름표 붙이기)
         mainContainer.add(startPanel, "Start");
@@ -46,6 +52,7 @@ public class MainFrame extends JFrame {
         mainContainer.add(oxPanel, "OXGame");         
         mainContainer.add(blankPanel, "BlankGame");
         mainContainer.add(notePanel, "Note");
+        mainContainer.add(saveLoadPanel, "SaveLoad"); 
         
         // 5. 프레임에 컨테이너 부착
         add(mainContainer);
@@ -70,7 +77,7 @@ public class MainFrame extends JFrame {
         {
             oxPanel.startGame();     
         } 
-        else if (panelName.equals("GameBlank")) 
+        else if (panelName.equals("BlankGame")) 
         { 
             blankPanel.startGame();
         }
@@ -79,6 +86,13 @@ public class MainFrame extends JFrame {
             notePanel.startGame(); 
         }
         
+        if (panelName.equals("Mode")) {
+            // 현재 선택된 슬롯이 있다면 저장 실행
+            if (SaveManager.currentSlot != -1) 
+            {
+                saveManager.save(SaveManager.currentSlot);
+            }
+        }
 
         // 3. 키보드 입력을 위해 포커스 맞추기
         mainContainer.requestFocusInWindow();

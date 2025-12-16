@@ -25,12 +25,7 @@ public class StartPanel extends JPanel {
         JButton helpBtn = createStyledButton("도움말");
 
         // 이벤트: 시작 버튼 누르면 모드 선택으로 이동
-        startBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                mainFrame.changePanel("Mode"); 
-            }
-        });
+        startBtn.addActionListener(e -> mainFrame.changePanel("SaveLoad"));
         
         // 도움말 버튼 (팝업 띄우기)
         helpBtn.addActionListener(e -> JOptionPane.showMessageDialog(this, "자바 문법을 게임으로 배워보세요!"));

@@ -3,18 +3,25 @@ package com.team.ui.game;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
-import java.util.Collections;
-import java.util.ArrayList;
-
 import com.team.ui.MainFrame;
 import com.team.data.QuestionRepository;
 import com.team.model.Question;
 import com.team.model.QuestionType;
 
 public class FillBlankPanel extends BaseGamePanel {
-    private JLabel questionTextLabel; // 상단 질문
-    private JLabel codeLabel;         // 중앙 코드 (HTML 사용)
-    private JPanel optionsPanel;      // 하단 보기 버튼 4개
+    // 상단 및 중앙 영역
+    private JLabel questionTextLabel; 
+    private JLabel codeLabel;         
+    
+    // 하단 영역 (CardLayout 사용: 보기 버튼들 <-> 해설+다음버튼)
+    private JPanel bottomContainer;
+    private JPanel optionsPanel;      // 보기 버튼 4개 있는 곳
+    private JPanel feedbackPanel;     // 결과, 해설, 다음버튼 있는 곳
+    
+    // 피드백 영역 구성요소
+    private JLabel resultLabel;       // "정답! ⭕" 또는 "오답! ❌"
+    private JTextArea explanationArea;// 해설 텍스트
+    private JButton nextBtn;          // [다음 문제] 버튼
     
     private List<Question> questionQueue;
     private int currentIndex = 0;
@@ -27,40 +34,81 @@ public class FillBlankPanel extends BaseGamePanel {
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.setOpaque(false);
-        centerPanel.setBorder(BorderFactory.createEmptyBorder(30, 50, 20, 50));
+        centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 50, 10, 50));
 
         // 질문 텍스트
-        questionTextLabel = new JLabel("문제가 여기에 나옵니다.");
-        questionTextLabel.setFont(new Font("맑은 고딕", Font.BOLD, 24));
+        questionTextLabel = new JLabel("문제 로딩 중...");
+        questionTextLabel.setFont(new Font("맑은 고딕", Font.BOLD, 22));
         questionTextLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         
-        // 코드 박스 (HTML로 배경색과 스타일 입히기)
+        // 코드 박스 (HTML로 스타일링)
         codeLabel = new JLabel();
-        codeLabel.setFont(new Font("Consolas", Font.PLAIN, 18)); // 코드용 폰트
+        codeLabel.setFont(new Font("Consolas", Font.PLAIN, 16)); 
         codeLabel.setOpaque(true);
-        codeLabel.setBackground(new Color(230, 230, 230)); // 회색 박스
-        codeLabel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        codeLabel.setBackground(new Color(230, 230, 230)); 
+        codeLabel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
         codeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         centerPanel.add(questionTextLabel);
-        centerPanel.add(Box.createRigidArea(new Dimension(0, 20))); // 간격
+        centerPanel.add(Box.createRigidArea(new Dimension(0, 15)));
         centerPanel.add(codeLabel);
 
         add(centerPanel, BorderLayout.CENTER);
 
-        // 2. 하단 보기 영역 (버튼 4개)
-        optionsPanel = new JPanel(new GridLayout(2, 2, 20, 20)); // 2행 2열
-        optionsPanel.setOpaque(false);
-        optionsPanel.setBorder(BorderFactory.createEmptyBorder(20, 100, 50, 100));
-        optionsPanel.setPreferredSize(new Dimension(1280, 200));
+        // 2. 하단 영역 (CardLayout 설정)
+        bottomContainer = new JPanel(new CardLayout());
+        bottomContainer.setOpaque(false);
+        bottomContainer.setPreferredSize(new Dimension(1280, 250)); // 높이 확보
+        bottomContainer.setBorder(BorderFactory.createEmptyBorder(10, 100, 30, 100));
 
-        add(optionsPanel, BorderLayout.SOUTH);
+        // [카드 1] 보기 버튼 패널
+        optionsPanel = new JPanel(new GridLayout(2, 2, 15, 15));
+        optionsPanel.setOpaque(false);
+
+        // [카드 2] 피드백 패널 (결과 + 해설 + 다음 버튼)
+        feedbackPanel = new JPanel(new BorderLayout());
+        feedbackPanel.setOpaque(false);
+        
+        // 피드백 상단: 결과 멘트
+        resultLabel = new JLabel("", SwingConstants.CENTER);
+        resultLabel.setFont(new Font("맑은 고딕", Font.BOLD, 24));
+        
+        // 피드백 중앙: 해설 (내용이 길 수 있으니 TextArea)
+        explanationArea = new JTextArea();
+        explanationArea.setFont(new Font("맑은 고딕", Font.PLAIN, 18));
+        explanationArea.setLineWrap(true);
+        explanationArea.setWrapStyleWord(true);
+        explanationArea.setEditable(false);
+        explanationArea.setOpaque(false);
+        explanationArea.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        
+        // 피드백 하단: 다음 버튼
+        JPanel nextBtnPanel = new JPanel(new FlowLayout());
+        nextBtnPanel.setOpaque(false);
+        nextBtn = new JButton("다음 문제 >");
+        nextBtn.setFont(new Font("맑은 고딕", Font.BOLD, 20));
+        nextBtn.setPreferredSize(new Dimension(200, 50));
+        nextBtn.setBackground(new Color(145, 107, 85));
+        nextBtn.setForeground(Color.WHITE);
+        nextBtn.setFocusPainted(false);
+        nextBtn.addActionListener(e -> nextQuestion()); // 클릭 시 다음 문제로
+
+        nextBtnPanel.add(nextBtn);
+
+        feedbackPanel.add(resultLabel, BorderLayout.NORTH);
+        feedbackPanel.add(explanationArea, BorderLayout.CENTER);
+        feedbackPanel.add(nextBtnPanel, BorderLayout.SOUTH);
+
+        // 컨테이너에 카드 추가
+        bottomContainer.add(optionsPanel, "OPTIONS");
+        bottomContainer.add(feedbackPanel, "FEEDBACK");
+
+        add(bottomContainer, BorderLayout.SOUTH);
     }
 
     @Override
     public void startGame() {
         super.startGame();
-        // 저장소에서 빈칸 문제 가져오기
         questionQueue = QuestionRepository.getInstance().getQuestionsByType(QuestionType.BLANK);
         currentIndex = 0;
         nextQuestion();
@@ -73,30 +121,28 @@ public class FillBlankPanel extends BaseGamePanel {
         }
         currentQuestion = questionQueue.get(currentIndex++);
         
-        // 질문 표시
+        // 1. 질문 및 코드 표시
         questionTextLabel.setText(currentQuestion.getQuestionText());
         
-        // 코드 표시 (HTML을 써서 빈칸을 밑줄로 강조)
-        // 실제로는 문제에 'code' 필드가 따로 없어서, 일단 질문 텍스트를 응용하거나 
-        // Question 클래스에 codeText 필드를 추가해야 하지만, 
-        // 여기서는 임시로 "_____" 빈칸이 있는 형태라고 가정하고 꾸며줍니다.
-        String codeHtml = "<html><body style='text-align:center; width: 400px;'>" 
-                        + "public class Test {<br>"
-                        + "&nbsp;&nbsp;&nbsp;&nbsp;public static <b>_______</b> main(String[] args) {<br>"
-                        + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(\"Hello\");<br>"
-                        + "&nbsp;&nbsp;&nbsp;&nbsp;}<br>"
-                        + "}" 
-                        + "</body></html>";
-        // (참고: 실제로는 Question 객체에 코드 텍스트가 있어야 정확히 바뀝니다. 
-        // 지금은 데모를 위해 하드코딩된 HTML을 보여줍니다.)
-        codeLabel.setText(codeHtml);
+        String rawCode = currentQuestion.getCode();
+        if (rawCode == null) rawCode = "";
+        
+        // 코드 하이라이팅 (빈칸 빨간줄)
+        String htmlContent = "<html><body style='text-align:center;'>" 
+                           + rawCode.replace("\n", "<br>").replace("______", "<u><b style='color:red;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></u>") 
+                           + "</body></html>";
+        codeLabel.setText(htmlContent);
 
-        // 보기 버튼 업데이트
+        // 2. 보기 버튼 업데이트
         updateOptions(currentQuestion.getOptions());
+        
+        // 3. 화면 전환 -> 보기 선택 화면으로
+        CardLayout cl = (CardLayout) bottomContainer.getLayout();
+        cl.show(bottomContainer, "OPTIONS");
     }
 
     private void updateOptions(String[] options) {
-        optionsPanel.removeAll(); // 기존 버튼 제거
+        optionsPanel.removeAll(); 
         
         if (options != null) {
             for (String opt : options) {
@@ -105,7 +151,7 @@ public class FillBlankPanel extends BaseGamePanel {
                 btn.setBackground(Color.WHITE);
                 btn.setFocusPainted(false);
                 
-                btn.addActionListener(e -> checkAnswer(opt, btn));
+                btn.addActionListener(e -> checkAnswer(opt));
                 optionsPanel.add(btn);
             }
         }
@@ -113,24 +159,29 @@ public class FillBlankPanel extends BaseGamePanel {
         optionsPanel.repaint();
     }
 
-    private void checkAnswer(String selected, JButton btn) {
+    private void checkAnswer(String selected) {
         boolean isCorrect = currentQuestion.checkAnswer(selected);
         
+        // 1. 점수 처리
         if (isCorrect) {
-            score += 30; // 빈칸은 어려우니까 고득점
-            scoreLabel.setText("점수: " + score);
-            btn.setBackground(Color.GREEN);
+            updateScore(30); 
+            resultLabel.setText("정답입니다! ⭕");
+            resultLabel.setForeground(new Color(0, 150, 0));
         } else {
-            score -= 10;
+            updateScore(-10);
             QuestionRepository.getInstance().addWrongAnswer(currentQuestion.getId());
-            btn.setBackground(Color.RED);
-            JOptionPane.showMessageDialog(this, "오답! 정답은: " + currentQuestion.getAnswer() 
-                + "\n해설: " + currentQuestion.getExplanation());
+            resultLabel.setText("오답! ❌   정답: " + currentQuestion.getAnswer());
+            resultLabel.setForeground(Color.RED);
         }
 
-        // 잠시 후 다음 문제
-        Timer t = new Timer(1000, e -> nextQuestion());
-        t.setRepeats(false);
-        t.start();
+        // 2. 해설 내용 세팅
+        explanationArea.setText(currentQuestion.getExplanation());
+
+        // 3. 화면 전환 -> 피드백(해설+다음버튼) 화면으로
+        CardLayout cl = (CardLayout) bottomContainer.getLayout();
+        cl.show(bottomContainer, "FEEDBACK");
+        
+        // 다음 버튼에 포커스 (엔터키로 넘어갈 수 있게)
+        nextBtn.requestFocus();
     }
 }

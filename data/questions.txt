@@ -1,5 +1,40 @@
-# ID | TYPE | QUESTION | ANSWER | EXPLANATION | OPTIONS(콤마로 구분)
-101|KEYWORD|public|public|접근제어자|
-102|KEYWORD|void|void|리턴값없음|
-201|OX|자바는 객체지향이다|O|OOP언어입니다|
-301|BLANK|상속 키워드는?|extends|확장하다|extends,implements,class,abstract
+# --- KEYWORD (타자 연습) ---
+101|KEYWORD|모든 클래스에서 접근 가능한 접근 제어자는?|null|public|public은 어디서든 접근 가능합니다.|null
+102|KEYWORD|인스턴스 생성 없이 사용할 수 있는 멤버를 선언하는 키워드는?|null|static|static 멤버는 클래스 로드 시 생성됩니다.|null
+103|KEYWORD|리턴값이 없음을 의미하는 리턴 타입은?|null|void|반환값이 없을 땐 void를 씁니다.|null
+104|KEYWORD|객체를 만들기 위한 설계도 역할을 하는 것은?|null|class|자바는 클래스 기반 언어입니다.|null
+105|KEYWORD|정수형 데이터를 저장하는 기본 데이터 타입은?|null|int|정수는 int, 실수는 double 등을 씁니다.|null
+106|KEYWORD|상속을 받을 때 사용하는 키워드는?|null|extends|클래스 확장은 extends입니다.|null
+107|KEYWORD|더 이상 변경할 수 없는 상수나 메서드를 만들 때 쓰는 키워드는?|null|final|final은 '마지막'이라는 뜻으로 수정을 막습니다.|null
+108|KEYWORD|추상 클래스를 선언할 때 사용하는 키워드는?|null|abstract|미완성 클래스는 abstract를 붙여야 합니다.|null
+109|KEYWORD|현재 객체 자신을 가리키는 참조 변수는?|null|this|this는 자기 자신의 인스턴스를 의미합니다.|null
+110|KEYWORD|상위 클래스의 생성자나 멤버를 호출할 때 쓰는 키워드는?|null|super|부모를 부를 때는 super를 사용합니다.|null
+111|KEYWORD|예외가 발생했을 때 이를 잡아서 처리하는 블록은?|null|catch|try-catch 블록에서 예외를 잡습니다.|null
+112|KEYWORD|다른 패키지의 클래스를 가져올 때 사용하는 키워드는?|null|import|외부 클래스는 import 해야 사용할 수 있습니다.|null
+113|KEYWORD|메서드가 예외를 던질 수 있음을 선언부 명시하는 키워드는?|null|throws|예외를 미룰 때 throws를 사용합니다.|null
+114|KEYWORD|조건문에서 조건이 거짓일 때 실행되는 블록은?|null|else|if문의 조건이 false이면 else가 실행됩니다.|null
+115|KEYWORD|반복문을 강제로 탈출할 때 사용하는 키워드는?|null|break|break를 만나면 가장 가까운 반복문을 종료합니다.|null
+
+# --- OX (O/X 퀴즈) ---
+201|OX|Java는 객체지향 언어이다.|null|O|Java는 대표적인 OOP 언어입니다.|null
+202|OX|int는 참조형 변수이다.|null|X|int는 기본형(Primitive) 변수입니다.|null
+203|OX|생성자는 리턴 타입이 없다.|null|O|생성자는 리턴 타입 자체가 없습니다.|null
+204|OX|배열의 인덱스는 1부터 시작한다.|null|X|배열은 0부터 시작합니다.|null
+205|OX|String은 변경 불가능(Immutable)한 객체다.|null|O|String 값을 바꾸면 새로운 객체가 생성됩니다.|null
+206|OX|인터페이스(Interface)의 모든 메서드는 기본적으로 public abstract이다.|null|O|인터페이스 메서드는 생략해도 public abstract입니다.|null
+207|OX|하나의 클래스는 여러 개의 클래스를 상속(extends)받을 수 있다.|null|X|자바는 다중 상속을 지원하지 않습니다. (단일 상속만 가능)|null
+208|OX|오버로딩(Overloading)은 메서드 이름이 같고 매개변수가 달라야 한다.|null|O|이름은 같지만 매개변수의 타입이나 개수가 달라야 합니다.|null
+209|OX|private 멤버는 같은 패키지 내의 다른 클래스에서 접근할 수 있다.|null|X|private은 오직 해당 클래스 내부에서만 접근 가능합니다.|null
+210|OX|try-catch 블록 뒤에 finally 블록은 반드시 있어야 한다.|null|X|finally는 생략 가능합니다.|null
+211|OX|main 메서드는 없어도 프로그램을 실행할 수 있다.|null|X|main 메서드는 프로그램의 진입점(Entry Point)이므로 필수입니다.|null
+212|OX|new 키워드 없이 객체를 생성할 수 있는 경우도 있다.|null|O|String이나 배열 등은 리터럴로 생성 가능하고, 리플렉션 등을 통해서도 가능합니다.|null
+
+# --- BLANK (빈칸 채우기) ---
+301|BLANK|다음 코드는 상속을 구현하는 부분이다. 빈칸에 알맞은 키워드는?|public class Dog ______ Animal {\n    void bark() {\n        System.out.println("멍멍");\n    }\n}|extends|클래스 상속은 extends를 사용합니다.|extends,implements,import,package
+302|BLANK|객체의 인스턴스를 생성할 때 사용하는 키워드는?|public static void main(String[] args) {\n    Dog myDog = ______ Dog();\n}|new|객체 생성 시에는 new 키워드를 사용합니다.|create,new,make,object
+303|BLANK|값을 반환하지 않는 메서드의 리턴 타입은?|public ______ printHello() {\n    System.out.println("Hello");\n}|void|리턴값이 없을 때는 void를 명시해야 합니다.|null,void,empty,zero
+304|BLANK|상위 클래스의 생성자를 호출하는 코드는?|public class Child extends Parent {\n    public Child() {\n        ______(10);\n    }\n}|super|부모 생성자 호출은 super()를 사용합니다.|this,super,parent,root
+305|BLANK|인터페이스를 구현할 때 사용하는 키워드는?|public class MyButton ______ ClickListener {\n    public void onClick() { ... }\n}|implements|인터페이스 구현은 implements입니다.|extends,implements,using,abstract
+306|BLANK|변수의 값을 변경할 수 없게 만드는 키워드는?|public class MathConstants {\n    public static ______ double PI = 3.14159;\n}|final|상수는 final 키워드로 선언합니다.|static,final,const,abs
+307|BLANK|패키지를 선언하는 올바른 키워드는?|______ com.team.game;\n\npublic class Main { ... }|package|소스코드 맨 윗줄에 패키지를 선언합니다.|import,package,include,namespace
+308|BLANK|현재 클래스의 인스턴스 변수를 가리킬 때 사용하는 것은?|public class User {\n    String name;\n    public void setName(String name) {\n        ______.name = name;\n    }\n}|this|이름이 겹칠 때 멤버 변수를 가리키기 위해 this를 씁니다.|super,self,this,obj
