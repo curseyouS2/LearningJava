@@ -1,100 +1,104 @@
 package com.team.util;
 
 import javax.sound.sampled.*;
-import java.io.File;
+import java.net.URL;
 
 public class SoundManager {
     private static SoundManager instance;
     private Clip bgmClip; // 배경음악
     private boolean isMuted = false;
-    
+
     public static SoundManager getInstance() {
         if (instance == null) {
             instance = new SoundManager();
         }
         return instance;
     }
-    
+
     private SoundManager() {
         // 생성자
     }
-    
+
     // 배경음악 재생
     public void playBGM() {
         try {
-            if (bgmClip != null && bgmClip.isRunning()) {
-                return; // 이미 재생 중
-            }
-            
-            File soundFile = new File("resources/sounds/bgm.wav");
-            if (!soundFile.exists()) {
-                System.out.println("[알림] 배경음악 파일이 없습니다.");
+            if (isMuted) return;
+            if (bgmClip != null && bgmClip.isRunning()) return;
+
+            URL url = getClass().getResource("/sounds/bgm.wav");
+            if (url == null) {
+                System.out.println("[알림] 배경음악 리소스를 찾을 수 없습니다.");
                 return;
             }
-            
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
+
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
             bgmClip = AudioSystem.getClip();
             bgmClip.open(audioIn);
-            bgmClip.loop(Clip.LOOP_CONTINUOUSLY); // 반복 재생
+            bgmClip.loop(Clip.LOOP_CONTINUOUSLY);
             bgmClip.start();
-            
+
             System.out.println("[사운드] 배경음악 재생 시작");
         } catch (Exception e) {
             System.out.println("[오류] 배경음악 재생 실패");
+            e.printStackTrace();
         }
     }
-    
+
     // 배경음악 정지
     public void stopBGM() {
-        if (bgmClip != null && bgmClip.isRunning()) {
+        if (bgmClip != null) {
             bgmClip.stop();
+            bgmClip.close();
+            bgmClip = null;
             System.out.println("[사운드] 배경음악 정지");
         }
     }
-    
+
     // 효과음 재생 (버튼 클릭)
     public void playClickSound() {
         if (isMuted) return;
-        playSound("resources/sounds/click.wav");
+        playSound("/sounds/click.wav");
     }
-    
+
     // 효과음 재생 (정답)
     public void playCorrectSound() {
         if (isMuted) return;
-        playSound("resources/sounds/correct.wav");
+        playSound("/sounds/correct.wav");
     }
-    
+
     // 효과음 재생 (오답)
     public void playWrongSound() {
         if (isMuted) return;
-        playSound("resources/sounds/wrong.wav");
+        playSound("/sounds/wrong.wav");
     }
-    
-    // 일반 사운드 재생
-    private void playSound(String filePath) {
+
+    // 일반 사운드 재생 (효과음)
+    private void playSound(String resourcePath) {
         try {
-            File soundFile = new File(filePath);
-            if (!soundFile.exists()) {
-                System.out.println("[알림] 사운드 파일이 없습니다: " + filePath);
+            URL url = getClass().getResource(resourcePath);
+            if (url == null) {
+                System.out.println("[알림] 사운드 리소스를 찾을 수 없습니다: " + resourcePath);
                 return;
             }
-            
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
+
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
             Clip clip = AudioSystem.getClip();
             clip.open(audioIn);
             clip.start();
-            
-            // 재생 완료 후 자동으로 닫기
+
+            // 재생 완료 후 자동 해제
             clip.addLineListener(event -> {
                 if (event.getType() == LineEvent.Type.STOP) {
                     clip.close();
                 }
             });
+
         } catch (Exception e) {
-            System.out.println("[오류] 사운드 재생 실패: " + filePath);
+            System.out.println("[오류] 사운드 재생 실패: " + resourcePath);
+            e.printStackTrace();
         }
     }
-    
+
     // 음소거 토글
     public void toggleMute() {
         isMuted = !isMuted;
@@ -104,7 +108,7 @@ public class SoundManager {
             playBGM();
         }
     }
-    
+
     public boolean isMuted() {
         return isMuted;
     }

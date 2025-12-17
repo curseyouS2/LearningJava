@@ -25,7 +25,7 @@ public class QuestionRepository {
     private void loadAllData() {
         FileManager fm = new FileManager();
         // 프로젝트 폴더 안의 data/questions.txt 경로
-        List<Question> loadedList = fm.loadQuestions("data/questions.txt");
+        List<Question> loadedList = fm.loadQuestions("/questions.txt");
 
         if (loadedList != null && !loadedList.isEmpty()) {
             // 파일 로드 성공 시
