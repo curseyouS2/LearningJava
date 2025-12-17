@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import com.team.ui.MainFrame;
 import com.team.data.SaveManager;
+import com.team.util.ImageManager;  // ← 이 줄 추가!
 
 public class SaveLoadPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -17,6 +18,25 @@ public class SaveLoadPanel extends JPanel {
         
         setLayout(new BorderLayout());
         setBackground(new Color(248, 233, 233));
+        
+        // 상단 로고 (글씨 포함)
+        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 30));
+        topPanel.setOpaque(false);
+        
+        ImageIcon logoImg = ImageManager.getInstance().getSmallLogo();
+        JLabel logo;
+        if (logoImg != null) {
+            // 로고 크게 (250x100)
+            Image img = logoImg.getImage();
+            Image scaledImg = img.getScaledInstance(250, 100, Image.SCALE_SMOOTH);
+            logo = new JLabel(new ImageIcon(scaledImg));
+        } else {
+            logo = new JLabel("☕ Learning Java");
+            logo.setFont(new Font("Arial", Font.BOLD, 32));
+            logo.setForeground(new Color(189, 130, 80));
+        }
+        topPanel.add(logo);
+        add(topPanel, BorderLayout.NORTH);
 
         // 타이틀
         JLabel titleLabel = new JLabel("데이터 불러오기 / 슬롯 선택", SwingConstants.CENTER);
