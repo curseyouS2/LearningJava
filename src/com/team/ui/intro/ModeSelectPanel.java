@@ -23,7 +23,7 @@ public class ModeSelectPanel extends JPanel {
         if (logoImg != null) {
             // 로고를 좀 더 크게 (160x64)
             Image img = logoImg.getImage();
-            Image scaledImg = img.getScaledInstance(160, 64, Image.SCALE_SMOOTH);
+            Image scaledImg = img.getScaledInstance(160, 100, Image.SCALE_SMOOTH);
             logo = new JLabel(new ImageIcon(scaledImg));
         } else {
             logo = new JLabel("☕ Learning Java");

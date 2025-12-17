@@ -86,9 +86,29 @@ public class BaseGamePanel extends JPanel {
         
         // 타이머 시작 (기존 타이머 정리 안함 - 학생 실수)
         gameTimer = new Timer(1000, e -> {
-            timeLeft--;
+        	timeLeft--;
             timeBar.setValue(timeLeft);
             timerLabel.setText("남은 시간: " + timeLeft + "초");
+            
+            // ⭐ 시간에 따라 색상 변경
+            if (timeLeft <= 10) {
+                // 10초 이하 - 빨간색 (긴박!)
+                timeBar.setForeground(new Color(255, 82, 82));
+                timerLabel.setForeground(new Color(255, 82, 82));
+            } else if (timeLeft <= 20) {
+                // 20초 이하 - 주황색 (경고)
+                timeBar.setForeground(new Color(255, 159, 64));
+                timerLabel.setForeground(new Color(255, 100, 0));
+            } else if (timeLeft <= 30) {
+                // 30초 이하 - 노란색 (주의)
+                timeBar.setForeground(new Color(255, 205, 86));
+                timerLabel.setForeground(new Color(180, 130, 0));
+            } else {
+                // 30초 이상 - 초록색 (여유)
+                timeBar.setForeground(new Color(134, 219, 102));
+                timerLabel.setForeground(Color.BLACK);
+            }
+            
             if (timeLeft <= 0) {
                 gameOver();
             }

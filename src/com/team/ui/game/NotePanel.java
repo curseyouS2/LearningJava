@@ -21,7 +21,9 @@ public class NotePanel extends BaseGamePanel {
         super(mainFrame);
         // 오답노트에서는 상단 타이머/점수가 필요 없으니 숨김 처리
         timeBar.setVisible(false);
-        scoreLabel.setText("오답 복습 모드 📝");
+        timerLabel.setVisible(false); // 남은 시간 텍스트 완전히 숨김
+        timerLabel.setText(""); // 텍스트도 비우기
+        scoreLabel.setText("오답 복습 모드");
         
         // 1. 중앙 영역 (카드 형태)
         JPanel centerPanel = new JPanel();
@@ -86,7 +88,7 @@ public class NotePanel extends BaseGamePanel {
         currentIndex = 0;
         
         if (wrongList.isEmpty()) {
-            questionArea.setText("축하합니다! 틀린 문제가 없습니다. \n완벽해요! 🎉");
+            questionArea.setText("축하합니다! 틀린 문제가 없습니다. \n");
             answerArea.setText("");
             checkBtn.setEnabled(false);
             nextBtn.setEnabled(false);

@@ -25,7 +25,7 @@ public class ImageManager {
     
     // 작은 로고 (상단용)
     public ImageIcon getSmallLogo() {
-        return loadImage("resources/images/logo.png", 40, 40);
+        return loadImage("resources/images/logo.png", 800, 400);
     }
     
     // 홈 버튼 이미지

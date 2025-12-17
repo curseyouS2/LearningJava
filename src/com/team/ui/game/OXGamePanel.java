@@ -117,13 +117,13 @@ public class OXGamePanel extends BaseGamePanel {
 
         if (isCorrect) {
             updateScore(20);
-            resultLabel.setText("정답입니다! ⭕");
+            resultLabel.setText("정답입니다!");
             resultLabel.setForeground(new Color(0, 150, 0));
             SoundManager.getInstance().playCorrectSound();
         } else {
             updateScore(-10);
             QuestionRepository.getInstance().addWrongAnswer(currentQuestion.getId());
-            resultLabel.setText("<html><center>오답! ❌<br>해설: " 
+            resultLabel.setText("<html><center>오답!<br>해설: " 
                 + currentQuestion.getExplanation() + "</center></html>");
             resultLabel.setForeground(Color.RED);
             SoundManager.getInstance().playWrongSound();

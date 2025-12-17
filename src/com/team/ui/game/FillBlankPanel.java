@@ -154,13 +154,13 @@ public class FillBlankPanel extends BaseGamePanel {
         
         if (isCorrect) {
             updateScore(30);
-            resultLabel.setText("정답입니다! ⭕");
+            resultLabel.setText("정답입니다!");
             resultLabel.setForeground(new Color(0, 150, 0));
             SoundManager.getInstance().playCorrectSound();
         } else {
             updateScore(-10);
             QuestionRepository.getInstance().addWrongAnswer(currentQuestion.getId());
-            resultLabel.setText("오답! ❌   정답: " + currentQuestion.getAnswer());
+            resultLabel.setText("오답!   정답: " + currentQuestion.getAnswer());
             resultLabel.setForeground(Color.RED);
             SoundManager.getInstance().playWrongSound();
         }
