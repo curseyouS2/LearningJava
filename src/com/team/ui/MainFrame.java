@@ -63,7 +63,7 @@ public class MainFrame extends JFrame {
         setVisible(true);
     }
 
-    // ★ 화면 전환 메서드 (가장 중요)
+    //  화면 전환 메서드
     public void changePanel(String panelName) {
     	
         cardLayout.show(mainContainer, panelName);
